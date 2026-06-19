@@ -16,10 +16,16 @@ Run root commands for the extension, and `figma-plugin` commands only when worki
 - `npm install`: install root extension dependencies.
 - `npm test`: placeholder command for the root extension; currently no automated tests are configured.
 - `npm run lint`: placeholder command for the root extension; currently prints that lint is not configured.
-- `cd figma-plugin && npm install`: install plugin dependencies.
-- `cd figma-plugin && npm run dev`: start the Plugma dev build for live plugin iteration.
-- `cd figma-plugin && npm run build`: create a production plugin build in `figma-plugin/dist/`.
-- `cd figma-plugin && npm run release`: run Plugma’s release build flow.
+
+user will handle build manually for figma plugin, so no build scripts are included.
+
+FigmaPlugin
+
+do not remove the localhost or add 127.0.0.1 in order for the dev work
+"networkAccess": {
+"allowedDomains": ["http://localhost:32123/"],
+"devAllowedDomains": ["http://localhost:32123/"]
+},
 
 For the VS Code extension, press `F5` in VS Code to open an Extension Development Host.
 

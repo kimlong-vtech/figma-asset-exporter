@@ -11,17 +11,10 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:figmaSidebarView",
-    "onCommand:figma.openCenterView"
+    "onView:figmaSidebarView"
   ],
   "main": "./src/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "figma.openCenterView",
-        "title": "Figma: Open Center View"
-      }
-    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -35,7 +28,8 @@
       "figmaSidebarContainer": [
         {
           "id": "figmaSidebarView",
-          "name": "Figma"
+          "name": "Figma",
+          "type": "webview"
         }
       ]
     }
