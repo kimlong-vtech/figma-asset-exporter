@@ -26,6 +26,9 @@ export function SettingsTool({
 	const [defaultExportScale, setDefaultExportScale] = useState(() =>
 		normalizeAssetScale(exporterSettings.defaultScale, exporterSettings.defaultType),
 	);
+	const [autoAIRename, setAutoAIRename] = useState(
+		exporterSettings.autoAIRename !== undefined ? exporterSettings.autoAIRename : true,
+	);
 
 	const scaleOptions = useMemo(() => getAvailableScalesForType(defaultExportType), [defaultExportType]);
 
@@ -34,6 +37,7 @@ export function SettingsTool({
 		setExportRelativeDir(exporterSettings.relativeDir || DEFAULT_DIR);
 		setDefaultExportType(nextType);
 		setDefaultExportScale(normalizeAssetScale(exporterSettings.defaultScale, nextType));
+		setAutoAIRename(exporterSettings.autoAIRename !== undefined ? exporterSettings.autoAIRename : true);
 	}, [exporterSettings]);
 
 	useEffect(() => {
@@ -56,6 +60,7 @@ export function SettingsTool({
 			relativeDir: nextDir,
 			defaultType: nextType,
 			defaultScale: nextScale,
+			autoAIRename,
 		});
 	};
 
@@ -128,8 +133,20 @@ export function SettingsTool({
 							</select>
 						</FieldStack>
 					</div>
+					<FieldStack label="Auto AI rename" htmlFor="auto-ai-rename-settings" orientation="horizontal">
+						<label className="relative inline-flex cursor-pointer items-center">
+							<input
+								id="auto-ai-rename-settings"
+								type="checkbox"
+								className="peer sr-only"
+								checked={autoAIRename}
+								onChange={(event) => setAutoAIRename(event.target.checked)}
+							/>
+							<div className="peer-checked:bg-[var(--figma-color-border-selected)] h-[18px] w-[32px] rounded-full bg-[var(--figma-color-border)] transition-colors peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[var(--figma-color-border-selected)] after:absolute after:left-[1px] after:top-[1px] after:h-[16px] after:w-[16px] after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:after:translate-x-[14px]"></div>
+						</label>
+					</FieldStack>
 					<p className="m-0 text-[10px] leading-[1.4] text-[var(--figma-color-text-secondary)]">
-						The folder is relative to your open VS Code workspace. SVG exports are fixed to 1x.
+						When enabled, assets will be automatically renamed using AI suggestions when added to the queue. The folder is relative to your open VS Code workspace. SVG exports are fixed to 1x.
 					</p>
 					<div className="flex justify-end">
 						<Button variant="primary" onClick={handleSaveExporterSettings} disabled={exporterSaveStatus === 'saving'}>

@@ -50,6 +50,10 @@ class FigmaSidebarProvider {
           this.postStatus();
         });
       }
+
+      if (message.type === "stopServer") {
+        this.exportServer.stop();
+      }
     });
 
     webviewView.webview.html = getSidebarHtml();
@@ -70,11 +74,8 @@ class FigmaSidebarProvider {
 
     this.webviewView.webview.postMessage({
       type: "serverStatus",
-      host: SERVER_HOST,
-      port: SERVER_PORT,
       workspacePath,
       running: this.exportServer.isRunning(),
-      endpoint: `http://${SERVER_HOST}:${SERVER_PORT}`,
     });
   }
 }
@@ -127,6 +128,20 @@ class FigmaExportServer {
         resolve();
       });
       this.server.once("error", reject);
+    });
+  }
+
+  async stop() {
+    if (!this.server) {
+      return;
+    }
+
+    await new Promise((resolve) => {
+      this.server.close(() => {
+        this.server = undefined;
+        this.emitStatusChange();
+        resolve();
+      });
     });
   }
 
@@ -196,39 +211,13 @@ function getSidebarHtml() {
           color: var(--vscode-foreground);
         }
 
-        .card {
-          border: 1px solid var(--vscode-panel-border);
-          border-radius: 10px;
-          padding: 14px;
-          background: var(--vscode-sideBar-background);
-        }
-
-        h2 {
-          margin-top: 0;
-        }
-
-        p {
-          line-height: 1.45;
-        }
-
-        code {
-          display: block;
-          margin: 10px 0;
-          padding: 10px 12px;
-          border-radius: 8px;
-          background: var(--vscode-textCodeBlock-background);
-          word-break: break-all;
-        }
-
-        .meta {
+        .info {
           margin: 12px 0;
-          font-size: 12px;
-          color: var(--vscode-descriptionForeground);
+          font-size: 13px;
+          color: var(--vscode-foreground);
         }
 
-        .hint {
-          margin-top: 12px;
-          font-size: 12px;
+        .info strong {
           color: var(--vscode-descriptionForeground);
         }
 
@@ -248,28 +237,30 @@ function getSidebarHtml() {
           background: var(--vscode-button-hoverBackground);
         }
 
-        button[disabled] {
-          opacity: 0.65;
-          cursor: default;
+        .stop-btn {
+          background: #d32f2f;
+          color: #ffffff;
+        }
+
+        .stop-btn:hover {
+          background: #b71c1c;
         }
       </style>
     </head>
     <body>
-      <div class="card">
-        <h2>Figma</h2>
-        <p>Start the local export server here, then connect from the Figma plugin.</p>
-        <code id="endpoint">Server not started yet</code>
-        <div class="meta">
-          <div><strong>Workspace:</strong> <span id="workspacePath">Checking...</span></div>
-          <div><strong>Status:</strong> <span id="status">Stopped</span></div>
-        </div>
-        <button id="startButton" type="button">Start Server</button>
-        <div class="hint">Once the server is running, use the Figma plugin's Connect button before exporting.</div>
+      <div class="info">
+        <div><strong>Workspace:</strong> <span id="workspacePath">Checking...</span></div>
+        <div><strong>Status:</strong> <span id="status">Stopped</span></div>
+      </div>
+      <div>
+        <button id="startButton" type="button">Start</button>
+        <button id="stopButton" type="button" class="stop-btn" style="display: none;">Stop</button>
       </div>
 
       <script>
         const vscode = acquireVsCodeApi();
         const startButton = document.getElementById("startButton");
+        const stopButton = document.getElementById("stopButton");
 
         window.addEventListener("message", (event) => {
           const message = event.data;
@@ -278,17 +269,18 @@ function getSidebarHtml() {
             return;
           }
 
-          document.getElementById("endpoint").textContent = message.running
-            ? "POST " + message.endpoint + "/export"
-            : "Server not started yet";
           document.getElementById("workspacePath").textContent = message.workspacePath;
           document.getElementById("status").textContent = message.running ? "Running" : "Stopped";
-          startButton.disabled = message.running;
-          startButton.textContent = message.running ? "Server Running" : "Start Server";
+          startButton.style.display = message.running ? "none" : "block";
+          stopButton.style.display = message.running ? "block" : "none";
         });
 
         startButton.addEventListener("click", () => {
           vscode.postMessage({ type: "startServer" });
+        });
+
+        stopButton.addEventListener("click", () => {
+          vscode.postMessage({ type: "stopServer" });
         });
 
         vscode.postMessage({ type: "refreshStatus" });

@@ -375,6 +375,7 @@ function sanitizeExporterSettings(settings) {
 			: 'figma-exports',
 		defaultType,
 		defaultScale: normalizeExporterScale(nextSettings.defaultScale, defaultType),
+		autoAIRename: nextSettings.autoAIRename === true,
 	};
 }
 

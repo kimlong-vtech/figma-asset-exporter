@@ -240,7 +240,7 @@ export function useAssetExporter({ geminiApiKey, exporterSettings }) {
 							|| updatedAsset.previewUrl
 							|| previewUrl;
 
-						if (!geminiApiKey.trim()) {
+						if (!geminiApiKey.trim() || exporterSettings.autoAIRename === false) {
 							updatedAsset.status = 'ready';
 						}
 
@@ -256,7 +256,7 @@ export function useAssetExporter({ geminiApiKey, exporterSettings }) {
 					return currentPreview;
 				});
 
-				if (!hasExistingPreview && geminiApiKey.trim()) {
+				if (!hasExistingPreview && geminiApiKey.trim() && exporterSettings.autoAIRename !== false) {
 					queueGeminiRename(asset.id, {
 						apiKey: geminiApiKey.trim(),
 						nodeName: asset.name,

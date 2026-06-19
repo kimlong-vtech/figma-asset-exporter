@@ -27,6 +27,7 @@ function App() {
 		relativeDir: DEFAULT_DIR,
 		defaultType: DEFAULT_TYPE,
 		defaultScale: DEFAULT_SCALE,
+		autoAIRename: true,
 	});
 	const [exporterSaveStatus, setExporterSaveStatus] = useState('idle');
 
@@ -74,6 +75,7 @@ function App() {
 						: DEFAULT_DIR,
 					defaultType,
 					defaultScale: normalizeAssetScale(nextSettings.defaultScale, defaultType),
+					autoAIRename: nextSettings.autoAIRename !== false,
 				});
 
 				if (message.type === 'exporter-settings-saved') {
@@ -115,6 +117,7 @@ function App() {
 				: DEFAULT_DIR,
 			defaultType,
 			defaultScale: normalizeAssetScale(settings.defaultScale, defaultType),
+			autoAIRename: settings.autoAIRename !== false,
 		};
 
 		setExporterSettings(nextSettings);
@@ -139,7 +142,6 @@ function App() {
 				) : SelectedTool ? (
 					<SelectedTool
 						onBack={() => setView(DEFAULT_VIEW)}
-						onOpenSettings={() => setView('settings')}
 						exporterSettings={exporterSettings}
 						exporterSaveStatus={exporterSaveStatus}
 						onSaveExporterSettings={handleSaveExporterSettings}

@@ -5,7 +5,7 @@ import { Panel } from '../components/Panel.jsx';
 import { AssetRow } from '../components/AssetRow.jsx';
 import { useAssetExporter } from './useAssetExporter.js';
 
-export function AssetExporterTool({ onBack, onOpenSettings, geminiApiKey, exporterSettings }) {
+export function AssetExporterTool({ onBack, geminiApiKey, exporterSettings }) {
 	const {
 		DEFAULT_DIR,
 		alert,
@@ -63,9 +63,6 @@ export function AssetExporterTool({ onBack, onOpenSettings, geminiApiKey, export
 					</button>
 					<h1 className="m-0 text-[18px] font-bold leading-[1.15]">Asset Exporter</h1>
 				</div>
-				<Button variant="ghost" onClick={onOpenSettings}>
-					Settings
-				</Button>
 			</div>
 
 			<Panel variant="accent">
