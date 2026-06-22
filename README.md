@@ -1,4 +1,4 @@
-# AssetPort
+# assetport
 
 ![AssetPort Logo](logo.png)
 
