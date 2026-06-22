@@ -98,6 +98,12 @@ pnpm package:vscode:all
 
 ### VS Code extension
 
+**Option A — Marketplace (recommended)**
+
+Search for **assetport** in the VS Code Extensions panel, or install directly from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport).
+
+**Option B — Build from source**
+
 1. Run `pnpm package:vscode` to produce a `.vsix` file.
 2. In VS Code, run **Extensions: Install from VSIX** and select the `.vsix` file.
 
@@ -126,7 +132,3 @@ pnpm package:vscode:all
 | `assetport.compressionQuality` | `75`    | Quality target (0–100) for lossy PNG/JPEG compression. `100` keeps PNGs lossless. SVGs are never compressed. |
 
 ---
-
-## Demo
-
-https://github.com/user-attachments/assets/3e10cea8-d1d3-4ab2-a74c-36342a0008f6
