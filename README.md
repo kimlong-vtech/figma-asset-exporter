@@ -4,6 +4,10 @@
 
 Export Figma assets directly to your VS Code workspace.
 
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/kimlonghok.assetport?label=VS%20Code%20Marketplace&logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport)
+
+**[Install from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport)**
+
 This repository is a pnpm monorepo with two parts that work together:
 
 - **`apps/vscode`** — VS Code extension that runs a local HTTP server on `http://localhost:32123`
