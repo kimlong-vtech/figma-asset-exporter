@@ -4,9 +4,9 @@
 
 Export Figma assets directly to your VS Code workspace.
 
-[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/kimlonghok.assetport?label=VS%20Code%20Marketplace&logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport)
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/kimlonghok.assetport-figma?label=VS%20Code%20Marketplace&logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport-figma)
 
-**[Install from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport)**
+**[Install from the VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport-figma)**
 
 This repository is a pnpm monorepo with two parts that work together:
 
@@ -99,7 +99,7 @@ pnpm package:vscode:all
 
 **Option A — Marketplace (recommended)**
 
-Search for **assetport** in the VS Code Extensions panel, or install directly from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport).
+Search for **assetport** in the VS Code Extensions panel, or install directly from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kimlonghok.assetport-figma).
 
 **Option B — Build from source**
 

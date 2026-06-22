@@ -5,9 +5,9 @@
   "scripts": {
     "build": "pnpm --filter @assetport/figma-plugin run build && pnpm --filter assetport run build",
     "dev:plugin": "pnpm --filter @assetport/figma-plugin run dev",
-    "dev:vscode": "pnpm --filter assetport run dev",
-    "package:vscode": "pnpm --filter assetport run package",
-    "package:vscode:all": "pnpm --filter assetport run package:all"
+    "dev:vscode": "pnpm --filter assetport-figma run dev",
+    "package:vscode": "pnpm --filter assetport-figma run package",
+    "package:vscode:all": "pnpm --filter assetport-figma run package:all"
   },
   "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b"
 }

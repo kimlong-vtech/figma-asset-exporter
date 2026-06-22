@@ -1,6 +1,6 @@
 {
-  "name": "assetport",
-  "displayName": "assetport",
+  "name": "assetport-figma",
+  "displayName": "assetport-figma",
   "description": "Export Figma assets directly to your VS Code workspace.",
   "version": "0.1.0",
   "publisher": "kimlonghok",
