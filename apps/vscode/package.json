@@ -2,7 +2,7 @@
   "name": "assetport-figma",
   "displayName": "assetport-figma",
   "description": "Export Figma assets directly to your VS Code workspace.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "kimlonghok",
   "repository": "https://github.com/kimlonghok/assetport",
   "engines": {
@@ -37,24 +37,7 @@
         "command": "assetport.stopServer",
         "title": "assetport: Stop Export Server"
       }
-    ],
-    "configuration": {
-      "title": "assetport",
-      "properties": {
-        "assetport.geminiApiKey": {
-          "type": "string",
-          "default": "",
-          "markdownDescription": "Gemini API key for AI-powered asset naming in the Figma plugin."
-        },
-        "assetport.compressionQuality": {
-          "type": "number",
-          "default": 75,
-          "minimum": 0,
-          "maximum": 100,
-          "markdownDescription": "Fallback quality target (0–100) for lossy compression of exported PNG/JPEG assets, similar to TinyPNG. Lower means smaller files. Set to `100` to keep PNGs lossless. SVGs are never compressed. The Figma plugin's own Compression quality setting overrides this when it sends an export."
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "build": "node esbuild.js",

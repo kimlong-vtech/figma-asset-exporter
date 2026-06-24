@@ -2,10 +2,12 @@ import * as http from 'http';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { compressJpeg, losslessCompressPng, pngQuantize } from '@napi-rs/image';
-import type { AssetFormat, ExportRequest, ExportResponse, HealthResponse, SettingsResponse } from '@assetport/shared';
+import type { AssetFormat, ExportRequest, ExportResponse, HealthResponse } from '@assetport/shared';
 
 const SERVER_HOST = 'localhost';
 const SERVER_PORT = 32123;
+// Used only if an export arrives without its own quality; the Figma plugin always sends one.
+const DEFAULT_COMPRESSION_QUALITY = 75;
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -146,14 +148,6 @@ class AssetPortServer implements vscode.Disposable {
       return;
     }
 
-    if (req.method === 'GET' && req.url === '/settings') {
-      const geminiApiKey = vscode.workspace.getConfiguration('assetport').get<string>('geminiApiKey', '');
-      const body: SettingsResponse = { geminiApiKey };
-      res.writeHead(200, { ...CORS_HEADERS, 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(body));
-      return;
-    }
-
     if (req.method === 'GET' && req.url === '/workspace') {
       const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
       const workspaceRoot = workspaceFolder?.uri.fsPath ?? null;
@@ -213,11 +207,10 @@ async function saveExportedAsset(payload: ExportRequest): Promise<ExportResponse
   const targetFile = resolveInsideWorkspace(targetDirectory, `${fileName}.${extension}`);
 
   const original = Buffer.from(base64Data, 'base64');
-  // The Figma plugin sends its own quality per export; fall back to the VS Code setting when absent.
-  const configQuality = vscode.workspace.getConfiguration('assetport').get<number>('compressionQuality', 75);
+  // The Figma plugin sends its own quality per export; fall back to a default only if it's absent.
   const quality = Number.isFinite(payload.compressionQuality as number)
     ? (payload.compressionQuality as number)
-    : configQuality;
+    : DEFAULT_COMPRESSION_QUALITY;
   const output = await compressAsset(original, payload.extension, quality);
 
   await vscode.workspace.fs.createDirectory(vscode.Uri.file(targetDirectory));

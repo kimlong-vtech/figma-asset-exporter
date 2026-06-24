@@ -8,7 +8,7 @@ export interface ExportRequest {
   extension: AssetFormat;
   relativeDir: string;
   base64Data: string;
-  /** Lossy compression quality target (0–100). When omitted, the server falls back to its own setting. 100 keeps PNGs lossless. */
+  /** Lossy compression quality target (0–100). When omitted, the server falls back to a default. 100 keeps PNGs lossless. */
   compressionQuality?: number;
 }
 
@@ -22,10 +22,6 @@ export interface HealthResponse {
   ok: boolean;
   host: string;
   port: number;
-}
-
-export interface SettingsResponse {
-  geminiApiKey: string;
 }
 
 export interface ErrorResponse {

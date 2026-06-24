@@ -1,4 +1,4 @@
-# Release the AssetPort VS Code extension for every platform.
+# Release the assetport VS Code extension for every platform.
 #
 # All per-platform VSIXs are built from a single Linux runner — `package:all` downloads
 # each target's @napi-rs/image binary with `npm pack`, so no build matrix is needed.
@@ -19,7 +19,7 @@ name: Release VS Code Extension
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
 
 permissions:

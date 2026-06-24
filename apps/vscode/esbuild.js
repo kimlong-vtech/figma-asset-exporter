@@ -1,4 +1,4 @@
-// Build script for the AssetPort VS Code extension.
+// Build script for the assetport VS Code extension.
 //
 // We bundle with esbuild instead of plain `tsc` because the extension depends on
 // @napi-rs/image, whose native `.node` binary cannot be bundled. Its loader first
@@ -12,20 +12,20 @@
 // running this build on (or with the binary for) each target and packaging with
 // `vsce package --target <platform>`.
 
-const esbuild = require('esbuild');
-const fs = require('fs');
-const path = require('path');
+const esbuild = require("esbuild");
+const fs = require("fs");
+const path = require("path");
 
-const production = process.argv.includes('--production');
-const watch = process.argv.includes('--watch');
-const outdir = path.join(__dirname, 'dist');
+const production = process.argv.includes("--production");
+const watch = process.argv.includes("--watch");
+const outdir = path.join(__dirname, "dist");
 
 // Leave anything that touches a native binary as a runtime require. esbuild resolves
 // every require() literal at build time across all of @napi-rs/image's platform
 // branches (it can't tell which one runs), so without this it fails on the dozen
 // non-host platform packages and on the wasi fallback that isn't even shipped.
 const nativeExternalPlugin = {
-  name: 'napi-native-external',
+  name: "napi-native-external",
   setup(build) {
     const passthrough = (args) => ({ path: args.path, external: true });
     build.onResolve({ filter: /\.node$/ }, passthrough);
@@ -40,15 +40,21 @@ const nativeExternalPlugin = {
 // the bundle, keeping its original name (e.g. image.darwin-arm64.node) so the loader's
 // `require('./image.<target>.node')` branch finds it.
 function copyHostBinary() {
-  const imgPkgJson = require.resolve('@napi-rs/image/package.json');
+  const imgPkgJson = require.resolve("@napi-rs/image/package.json");
   const imgDir = path.dirname(imgPkgJson);
-  const optionalDeps = Object.keys(require(imgPkgJson).optionalDependencies || {});
+  const optionalDeps = Object.keys(
+    require(imgPkgJson).optionalDependencies || {},
+  );
 
   for (const dep of optionalDeps) {
     try {
-      const depPkgJson = require.resolve(`${dep}/package.json`, { paths: [imgDir] });
+      const depPkgJson = require.resolve(`${dep}/package.json`, {
+        paths: [imgDir],
+      });
       const depDir = path.dirname(depPkgJson);
-      const binary = fs.readdirSync(depDir).find((file) => file.endsWith('.node'));
+      const binary = fs
+        .readdirSync(depDir)
+        .find((file) => file.endsWith(".node"));
       if (binary) {
         fs.copyFileSync(path.join(depDir, binary), path.join(outdir, binary));
         return binary;
@@ -57,18 +63,20 @@ function copyHostBinary() {
       // Not the host platform's package — keep looking.
     }
   }
-  throw new Error('Could not find an installed @napi-rs/image native binary for this platform.');
+  throw new Error(
+    "Could not find an installed @napi-rs/image native binary for this platform.",
+  );
 }
 
 function makeBuildOptions({ production: prod }) {
   return {
-    entryPoints: [path.join(__dirname, 'src/extension.ts')],
+    entryPoints: [path.join(__dirname, "src/extension.ts")],
     bundle: true,
-    platform: 'node',
-    format: 'cjs',
-    target: 'node18',
-    outfile: path.join(outdir, 'extension.js'),
-    external: ['vscode'],
+    platform: "node",
+    format: "cjs",
+    target: "node18",
+    outfile: path.join(outdir, "extension.js"),
+    external: ["vscode"],
     plugins: [nativeExternalPlugin],
     sourcemap: !prod,
     minify: prod,
@@ -90,7 +98,7 @@ async function run() {
     const ctx = await esbuild.context(makeBuildOptions({ production }));
     await ctx.watch();
     copyHostBinary();
-    console.log('esbuild: watching for changes...');
+    console.log("esbuild: watching for changes...");
     return;
   }
 
